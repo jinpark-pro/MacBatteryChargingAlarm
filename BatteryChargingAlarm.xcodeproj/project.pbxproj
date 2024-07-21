@@ -11,6 +11,7 @@
 		3C6C57BE2C4CE2A500A05581 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C57BD2C4CE2A500A05581 /* ContentView.swift */; };
 		3C6C57C02C4CE2A600A05581 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C6C57BF2C4CE2A600A05581 /* Assets.xcassets */; };
 		3C6C57C32C4CE2A600A05581 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C6C57C22C4CE2A600A05581 /* Preview Assets.xcassets */; };
+		3C6C57CB2C4CE31400A05581 /* BatteryNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C6C57CA2C4CE31400A05581 /* BatteryNotifier.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		3C6C57BF2C4CE2A600A05581 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3C6C57C22C4CE2A600A05581 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		3C6C57C42C4CE2A600A05581 /* BatteryChargingAlarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = BatteryChargingAlarm.entitlements; sourceTree = "<group>"; };
+		3C6C57CA2C4CE31400A05581 /* BatteryNotifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryNotifier.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			children = (
 				3C6C57BB2C4CE2A500A05581 /* BatteryChargingAlarmApp.swift */,
 				3C6C57BD2C4CE2A500A05581 /* ContentView.swift */,
+				3C6C57CA2C4CE31400A05581 /* BatteryNotifier.swift */,
 				3C6C57BF2C4CE2A600A05581 /* Assets.xcassets */,
 				3C6C57C42C4CE2A600A05581 /* BatteryChargingAlarm.entitlements */,
 				3C6C57C12C4CE2A600A05581 /* Preview Content */,
@@ -141,6 +144,7 @@
 			files = (
 				3C6C57BE2C4CE2A500A05581 /* ContentView.swift in Sources */,
 				3C6C57BC2C4CE2A500A05581 /* BatteryChargingAlarmApp.swift in Sources */,
+				3C6C57CB2C4CE31400A05581 /* BatteryNotifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
