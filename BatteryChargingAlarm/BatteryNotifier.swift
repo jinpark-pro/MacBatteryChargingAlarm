@@ -9,7 +9,9 @@ import Cocoa
 import IOKit.ps
 import UserNotifications
 
-class BatteryNotifier {
+class BatteryNotifier: ObservableObject {
+    @Published var isMonitoring: Bool = false
+    
     var timer: Timer?
     
     init() {
@@ -17,33 +19,33 @@ class BatteryNotifier {
     }
     
     func startMonitoring() {
+        isMonitoring = true
         // check battery every 1 minute
         timer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(checkBatteryStatus), userInfo: nil, repeats: true)
     }
     
     func stopMonitoring() {
+        isMonitoring = false
         // stop timer
         timer?.invalidate()
         timer = nil
     }
     
     @objc func checkBatteryStatus() {
-        print("Check")
         let snapshot = IOPSCopyPowerSourcesInfo().takeRetainedValue()
         let sources = IOPSCopyPowerSourcesList(snapshot).takeRetainedValue() as Array
         if let source = sources.first {
             if let info = IOPSGetPowerSourceDescription(snapshot, source).takeUnretainedValue() as? [String: Any] {
                 if let currentCapacity = info[kIOPSCurrentCapacityKey] as? Int, let maxCapacity = info[kIOPSMaxCapacityKey] as? Int, let isCharging = info[kIOPSIsChargingKey] as? Bool {
                     if isCharging {
-                        print("charging")
                         let batteryLevel = (Double(currentCapacity) / Double(maxCapacity)) * 100
                         if batteryLevel >= 80 {
                             sendNotification()
+                        } else {
+                            print("Battery is less than 80%")
                         }
                     } else {
-                        print("no charging")
-                        sendNotification()
-//                        stopMonitoring()
+                        stopMonitoring()
                     }
                 }
             }
@@ -60,8 +62,6 @@ class BatteryNotifier {
         UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
             if let error = error {
                 print("Notification error: \(error.localizedDescription)")
-            } else {
-                print("Notification scheduled successfully.")
             }
         })
     }
@@ -70,10 +70,6 @@ class BatteryNotifier {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
                 print("Notification permission error: \(error.localizedDescription)")
-            } else if granted {
-                print("Notification permission granted.")
-            } else {
-                print("Notification permission denied.")
             }
         }
     }

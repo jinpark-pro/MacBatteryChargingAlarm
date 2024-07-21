@@ -8,24 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var isMonitoring = false
-    @State private var batteryNotifier: BatteryNotifier?
+    @ObservedObject var batteryNotifier =  BatteryNotifier()
     
     var body: some View {
         VStack {
+            if batteryNotifier.isMonitoring {
+                Text("Monitoring Battery Charging")
+                    .foregroundStyle(.green)
+            } else {
+                Text("Monitoring Stop")
+                    .foregroundStyle(.red)
+            }
             Button(action: {
-                if isMonitoring {
+                if batteryNotifier.isMonitoring {
                     // monitoring stop
-                    batteryNotifier?.stopMonitoring()
-                    batteryNotifier = nil
+                    batteryNotifier.stopMonitoring()
                 } else {
                     // monitoring start
-                    batteryNotifier = BatteryNotifier()
-                    batteryNotifier?.startMonitoring()
+                    batteryNotifier.startMonitoring()
                 }
-                isMonitoring.toggle()
             }) {
-                Text(isMonitoring ? "Stop Monitoring" : "Start Monitoring")
+                Text(batteryNotifier.isMonitoring ? "Stop Monitoring" : "Start Monitoring")
                     .padding()
                     .background(Color.blue)
                     .foregroundColor(.white)
