@@ -28,18 +28,22 @@ class BatteryNotifier {
     }
     
     @objc func checkBatteryStatus() {
+        print("Check")
         let snapshot = IOPSCopyPowerSourcesInfo().takeRetainedValue()
         let sources = IOPSCopyPowerSourcesList(snapshot).takeRetainedValue() as Array
         if let source = sources.first {
             if let info = IOPSGetPowerSourceDescription(snapshot, source).takeUnretainedValue() as? [String: Any] {
                 if let currentCapacity = info[kIOPSCurrentCapacityKey] as? Int, let maxCapacity = info[kIOPSMaxCapacityKey] as? Int, let isCharging = info[kIOPSIsChargingKey] as? Bool {
                     if isCharging {
+                        print("charging")
                         let batteryLevel = (Double(currentCapacity) / Double(maxCapacity)) * 100
                         if batteryLevel >= 80 {
                             sendNotification()
                         }
                     } else {
-                        stopMonitoring()
+                        print("no charging")
+                        sendNotification()
+//                        stopMonitoring()
                     }
                 }
             }
@@ -53,13 +57,23 @@ class BatteryNotifier {
         content.sound = UNNotificationSound.default
 
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
-        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+            if let error = error {
+                print("Notification error: \(error.localizedDescription)")
+            } else {
+                print("Notification scheduled successfully.")
+            }
+        })
     }
     
     func requestNotificationPermission() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
                 print("Notification permission error: \(error.localizedDescription)")
+            } else if granted {
+                print("Notification permission granted.")
+            } else {
+                print("Notification permission denied.")
             }
         }
     }
